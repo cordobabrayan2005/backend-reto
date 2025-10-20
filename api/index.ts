@@ -1,13 +1,16 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { createClient } from "pexels";
-import serverless from "serverless-http";
+import "dotenv/config";
 
 const app = express();
-const client = createClient("V7N9EKJSDh4K8SqpS9SB19WGoGmgA9BiaBa3ddUHwbe7wBBW3hQlLrfp");
-
 app.use(cors());
 app.use(express.json());
+
+const client = createClient("V7N9EKJSDh4K8SqpS9SB19WGoGmgA9BiaBa3ddUHwbe7wBBW3hQlLrfp");
+
+/** Rutas */
+app.get("/", (_req, res) => res.send("Server running on Vercel"));
 
 app.get("/videos/popular", async (_req: Request, res: Response) => {
   try {
@@ -18,9 +21,5 @@ app.get("/videos/popular", async (_req: Request, res: Response) => {
   }
 });
 
-app.get("/", (_req, res) => {
-  res.send("✅ Backend corriendo correctamente en Vercel");
-});
-
-export const handler = serverless(app);
-export default handler;
+/** Exporta el handler para Vercel */
+export default app;
